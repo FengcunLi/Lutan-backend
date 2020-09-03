@@ -4,7 +4,7 @@ from mixer.backend.django import mixer
 from pytest import fixture
 from rest_framework.test import APIClient
 
-pytestmark = pytest.mark.django_db(transaction=True)
+pytestmark = pytest.mark.django_db()
 
 
 @fixture
