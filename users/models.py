@@ -1,8 +1,9 @@
-from django.db import models
-
 from django.contrib.auth.models import AbstractUser
-from avatars import upload_to
 from django.contrib.postgres.fields.jsonb import JSONField
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+from avatars import upload_to
 
 
 class User(AbstractUser):
@@ -20,6 +21,8 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ['username']
+    email = models.EmailField(
+        _('email address'), null=False, blank=False, unique=True)
 
     avatar_tmp = models.ImageField(
         max_length=255, upload_to=upload_to, null=True, blank=True

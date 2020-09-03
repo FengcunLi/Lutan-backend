@@ -1,0 +1,17 @@
+@base_url = http://127.0.0.1:8000
+
+###
+POST {{base_url}}/auth/users/
+Content-Type: application/x-www-form-urlencoded
+
+username=李丰存
+&password=lfc152413
+&email=fengcun.r.li@gmail.com
+
+###
+# @name auth
+POST {{base_url}}/auth/token/login/
+Content-Type: application/x-www-form-urlencoded
+
+password=lfc152413
+&email=fengcun.r.li@gmail.com
