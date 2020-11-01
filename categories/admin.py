@@ -1,3 +1,12 @@
 from django.contrib import admin
+from guardian.admin import GuardedModelAdmin
 
-# Register your models here.
+from categories.models import Category
+
+
+# With object permissions support
+class CategoryAdmin(GuardedModelAdmin):
+    pass
+
+
+admin.site.register(Category, CategoryAdmin)

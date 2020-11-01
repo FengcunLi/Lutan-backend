@@ -43,12 +43,19 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'mptt',
     'drf_yasg',
+    'corsheaders',
+    'guardian',
+    'django_filters',
     'users',
     'avatars',
     'categories',
+    'posts',
+    'threads',
+    'forum_faker',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -85,8 +92,12 @@ WSGI_APPLICATION = 'Lutan.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', 'lutan'),
+        'USER': os.environ.get('POSTGRES_USER', 'lutan'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'lutan'),
+        'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('POSTGRES_PORT', 5432)
     }
 }
 
@@ -136,3 +147,36 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8080",
+#     "http://127.0.0.1:8080",
+# ]
+CORS_ALLOW_ALL_ORIGINS = True
+
+FAKER_LOCALE = os.environ.get('FAKER_LOCALE', 'zh_CN')
+
+SWAGGER_SETTINGS = {
+    'DEFAULT_INFO': 'Lutan.openapi_info.DEFAULT_INFO'
+}
+
+DJOSER = {
+    'SERIALIZERS': {
+        'current_user': 'users.serializers.UserSerializer',
+        'user': 'users.serializers.UserSerializer'
+    },
+    'PERMISSIONS': {
+        'user_list': ['rest_framework.permissions.AllowAny']
+    },
+    'HIDE_USERS': False
+}
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # default
+    'guardian.backends.ObjectPermissionBackend',
+)
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+AVATARS_SIZES = [400, 200, 100]

@@ -1,17 +1,11 @@
 import pytest
 from mixer.backend.django import mixer
 from pytest import fixture
-from rest_framework.test import APIClient
 
 from categories import PUBLIC_THREADS_CATEGORY_TREE_ROOT_NAME
 from categories.models import Category
 
 pytestmark = pytest.mark.django_db()
-
-
-@fixture
-def client():
-    return APIClient()
 
 
 @fixture
@@ -27,7 +21,7 @@ def root():
     }
 
 
-def create(client, parent, faker):
+def create(client, faker, parent):
     data = {
         'name': faker.catch_phrase().title(),
         'description': faker.catch_phrase(),
@@ -45,13 +39,16 @@ def create(client, parent, faker):
     return child
 
 
-def test_create(client, root, faker):
-    c_1 = create(client, root, faker)
-    c_2 = create(client, root, faker)
-    c_3 = create(client, root, faker)
-    c_4 = create(client, c_2, faker)
+@fixture
+def category_tree(client, faker, root):
+    c_1 = create(client, faker, root)
+    c_2 = create(client, faker, root)
+    c_3 = create(client, faker, root)
+    c_4 = create(client, faker, c_2)
 
-    response = client.get('/categories/1/tree/')
+
+def test_create(client, category_tree):
+    response = client.get('/categories/tree/1')
     tree = response.data
     assert response.status_code == 200
     assert len(tree['subcategories']) == 3
