@@ -5,5 +5,5 @@ proc_name = 'Lutan'
 pidfile = '/tmp/lutan.pid'
 worker_class = 'gevent'
 max_requests = 600
-accesslog = '/tmp/gunicorn_access.log'
-errorlog = '/tmp/gunicorn_error.log'
+accesslog = '/var/log/gunicorn/access.log'
+errorlog = '/var/log/gunicorn/error.log'
