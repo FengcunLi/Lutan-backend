@@ -24,7 +24,8 @@ COLOR_WHEEL = (
     "#e64a19",
 )
 
-FONT_FILE = os.path.join(os.path.dirname(__file__), "font.ttf")
+FONT_FILE = os.path.join(os.path.dirname(
+    os.path.abspath(__file__)), "font.ttf")
 
 
 def generate_default_avatar(char: str):
